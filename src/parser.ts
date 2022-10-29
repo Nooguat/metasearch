@@ -1,6 +1,7 @@
 import { EngineResponse, EngineResult } from './search'
 import { Agent, fetch } from 'undici'
 import * as cheerio from 'cheerio'
+import { children } from 'cheerio/lib/api/traversing'
 
 let cachedCookies = {}
 
@@ -118,7 +119,7 @@ export function extractHref(dom: cheerio.Cheerio, query: string) {
 }
 
 interface ParseResultListOptions {
-	/** Whether it should remember this cookies into the next request for the same host */
+					/** Whether it should remember this cookies into the next request for the same host */
 	session?: boolean
 
 	resultItemPath: string
@@ -126,7 +127,7 @@ interface ParseResultListOptions {
 	hrefPath: string
 	contentPath: string
 	suggestionPath?: string
-
+	root? : string,
 	featuredSnippetPath?: string
 	featuredSnippetContentPath?: string
 	featuredSnippetTitlePath?: string
@@ -136,8 +137,8 @@ interface ParseResultListOptions {
 // for search engines like google, bing, etc
 export async function parseResultList(url: string, options: ParseResultListOptions): Promise<EngineResponse> {
 	const $: cheerio.Root = await requestDom(url, options.session ?? false)
-	const body: cheerio.Cheerio = $('body')
 
+	const body: cheerio.Cheerio = $('body')
 	const results: EngineResult[] = []
 
 	const resultElements = getElements(body, options.resultItemPath)
@@ -149,11 +150,17 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 	for (const resultItemIndex in resultElements) {
 		const resultItemEl = resultElements[resultItemIndex]
 		const resultTitle = extractText(resultItemEl, options.titlePath)
+
 		if (!resultTitle) continue
-		const resultUrl = extractHref(resultItemEl, options.hrefPath)
+		let resultHref = extractHref(resultItemEl, options.hrefPath)
+		if(options.root){
+			resultHref = options.root + resultHref;
+		}
+		const resultUrl = resultHref;
+		console.log(resultUrl);
 		if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js')) continue
 		const resultContent = extractText(resultItemEl, options.contentPath)
-
+		
 		if (options.featuredSnippetPath) {
 			const featuredSnippetEl = get(body, options.featuredSnippetPath)
 			if (featuredSnippetEl.length > 0) {
@@ -162,7 +169,6 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 				if (options.featuredSnippetHrefPath) featuredSnippetUrl = extractHref(featuredSnippetEl, options.featuredSnippetHrefPath)
 			}
 		}
-
 		results.push({
 			title: resultTitle,
 			url: resultUrl,

@@ -152,7 +152,12 @@ async function parseResultList(url, options) {
         const resultTitle = extractText(resultItemEl, options.titlePath);
         if (!resultTitle)
             continue;
-        const resultUrl = extractHref(resultItemEl, options.hrefPath);
+        let resultHref = extractHref(resultItemEl, options.hrefPath);
+        if (options.root) {
+            resultHref = options.root + resultHref;
+        }
+        const resultUrl = resultHref;
+        console.log(resultUrl);
         if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js'))
             continue;
         const resultContent = extractText(resultItemEl, options.contentPath);

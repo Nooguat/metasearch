@@ -87,7 +87,9 @@ async function requestAllEngines(query: string, req: RequestOptions): Promise<{[
 		const engine: Engine = engines[engineName]
 		if (engine.request) promises.push(requestEngine(engineName, query, req))
 	}
+	console.log('debug here');
 	const resolvedRequests: EngineResponse[] = await Promise.all(promises)
+	console.log('debug here');
 	const results: {[engineName: string]: EngineResponse} = {}
 	for (const engineIndex in resolvedRequests) {
 		const engineName = Object.keys(engines)[engineIndex]
@@ -190,6 +192,7 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 			let normalUrl
 			try {
 				normalUrl = normalizeUrl(result.url)
+				console.log(normalUrl);
 			} catch {
 				console.log('Invalid URL!', result, engineName)
 				continue
