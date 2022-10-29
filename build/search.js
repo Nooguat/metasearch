@@ -37,7 +37,9 @@ async function requestAllEngines(query, req) {
         if (engine.request)
             promises.push(requestEngine(engineName, query, req));
     }
+    console.log('debug here');
     const resolvedRequests = await Promise.all(promises);
+    console.log('debug here');
     const results = {};
     for (const engineIndex in resolvedRequests) {
         const engineName = Object.keys(engines)[engineIndex];
@@ -107,6 +109,7 @@ async function request(query, req) {
             let normalUrl;
             try {
                 normalUrl = (0, normalize_url_1.default)(result.url);
+                console.log(normalUrl);
             }
             catch {
                 console.log('Invalid URL!', result, engineName);
