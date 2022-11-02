@@ -14,8 +14,8 @@ jobs:
       - name: Compile Typescript
         uses: FuLagann/tsc-build-push@v1
         with:
-          user-name: "mat-1"
-          user-email: "github@matdoes.dev"
+          user-name: "pgsd"
+          user-email: "pgsd@zbamail.ml"
           message: "Compiled TS into JS"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

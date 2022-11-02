@@ -109,7 +109,9 @@ const normalizeUrl = (urlString, options = {}) => {
         urlObj.protocol = 'http:';
     }
     if (options.forceHttps && urlObj.protocol === 'http:') {
-        urlObj.protocol = 'https:';
+        if (!urlObj.host.includes('127.0.0.1')) {
+            urlObj.protocol = 'https:';
+        }
     }
     // Remove auth
     if (options.stripAuthentication) {
