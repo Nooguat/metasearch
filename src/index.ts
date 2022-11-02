@@ -6,7 +6,6 @@ import express from 'express'
 import { Options } from './search'
 
 const themes = require('../src/themes.json')
-
 const app = express()
 app.use(cookieParser())
 
