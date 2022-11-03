@@ -139,10 +139,10 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 	const $: cheerio.Root = await requestDom(url, options.session ?? false)
 
 	const body: cheerio.Cheerio = $('body')
+	
 	const results: EngineResult[] = []
 
 	const resultElements = getElements(body, options.resultItemPath)
-
 	let featuredSnippetContent: string | null = null
 	let featuredSnippetTitle: string | null = null
 	let featuredSnippetUrl: string | null = null
@@ -151,13 +151,17 @@ export async function parseResultList(url: string, options: ParseResultListOptio
 		const resultItemEl = resultElements[resultItemIndex]
 		const resultTitle = extractText(resultItemEl, options.titlePath)
 
+	if(url.includes("hndex")){
+	console.log(resultTitle.toString());
+	//console.log(body.text())
+	}
 		if (!resultTitle) continue
 		let resultHref = extractHref(resultItemEl, options.hrefPath)
 		if(options.root){
 			resultHref = options.root + resultHref;
 		}
 		const resultUrl = resultHref;
-		console.log(resultUrl);
+		//console.log(resultUrl);
 		if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js')) continue
 		const resultContent = extractText(resultItemEl, options.contentPath)
 		

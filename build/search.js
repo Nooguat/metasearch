@@ -109,7 +109,7 @@ async function request(query, req) {
             let normalUrl;
             try {
                 normalUrl = (0, normalize_url_1.default)(result.url);
-                console.log(normalUrl);
+                //console.log(normalUrl);
             }
             catch {
                 console.log('Invalid URL!', result, engineName);

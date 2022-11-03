@@ -192,7 +192,7 @@ async function request(query: string, req: RequestOptions): Promise<Options> {
 			let normalUrl
 			try {
 				normalUrl = normalizeUrl(result.url)
-				console.log(normalUrl);
+				//console.log(normalUrl);
 			} catch {
 				console.log('Invalid URL!', result, engineName)
 				continue

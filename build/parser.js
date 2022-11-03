@@ -150,6 +150,10 @@ async function parseResultList(url, options) {
     for (const resultItemIndex in resultElements) {
         const resultItemEl = resultElements[resultItemIndex];
         const resultTitle = extractText(resultItemEl, options.titlePath);
+        if (url.includes("hndex")) {
+            console.log(resultTitle.toString());
+            //console.log(body.text())
+        }
         if (!resultTitle)
             continue;
         let resultHref = extractHref(resultItemEl, options.hrefPath);
@@ -157,7 +161,7 @@ async function parseResultList(url, options) {
             resultHref = options.root + resultHref;
         }
         const resultUrl = resultHref;
-        console.log(resultUrl);
+        //console.log(resultUrl);
         if (!resultUrl || resultUrl.startsWith('https://duckduckgo.com/y.js'))
             continue;
         const resultContent = extractText(resultItemEl, options.contentPath);

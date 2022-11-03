@@ -7,12 +7,12 @@ export async function request(query): Promise<EngineResponse> {
 		session: true,
 
 		resultItemPath: 'section',
-		titlePath: 'p < cite',
+		titlePath: 'p > cite',
 		hrefPath: 'a[href]',
 		contentPath: '.TRY',
 		//suggestionPath: 'a.result-group-layout__queryCorrectedText-2Uw3R[href]',
 	})
-    //console.log('returning' + value);
+    console.log('returning' + value.results);
     return value;
 }
 
