@@ -16,4 +16,4 @@ async function request(query) {
     return value;
 }
 exports.request = request;
-exports.weight = 2;
+exports.weight = 1.75;
